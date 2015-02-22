@@ -6,6 +6,8 @@ lazy val root = (project in file(".")).enablePlugins(PlayJava)
 
 scalaVersion := "2.11.4"
 
+publishTo := Some(Resolver.file("play2-persistent-cache",file("../pages"))(Patterns(true, Resolver.mavenStyleBasePattern)))
+
 incOptions := incOptions.value.withNameHashing(true)
 
 libraryDependencies ++= Seq(
