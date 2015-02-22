@@ -1,10 +1,10 @@
-//import com.typesafe.sbteclipse.core.EclipsePlugin._
+name := "play2-persistent-cache"
 
-name := "persistent-cache"
+version := "1.0.0"
 
-version := "1.0-SNAPSHOT"
+lazy val root = (project in file(".")).enablePlugins(PlayJava)
 
-scalaVersion := Common.scalaVersion
+scalaVersion := "2.11.4"
 
 incOptions := incOptions.value.withNameHashing(true)
 
@@ -14,13 +14,11 @@ libraryDependencies ++= Seq(
 
 PlayKeys.ebeanEnabled := false
 
-EclipseKeys.executionEnvironment := Common.executionEnvironment
+//EclipseKeys.executionEnvironment := Some(EclipseExecutionEnvironment.JavaSE18)
 
 EclipseKeys.withSource := true
 
 EclipseKeys.eclipseOutput := Some(".target")
-
-EclipseKeys.classpathTransformerFactories := Seq(Common.addClassesManaged)
 
 sources in (Compile, doc) := Seq.empty
 
