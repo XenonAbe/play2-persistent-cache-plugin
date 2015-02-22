@@ -1,4 +1,4 @@
-package cache;
+package plugins;
 
 import java.net.URL;
 

@@ -5,6 +5,7 @@ import java.util.concurrent.Callable;
 
 import play.api.Application;
 import play.api.cache.CacheAPI;
+import plugins.PersistentCachePlugin;
 import scala.Option;
 
 public class PersistentCache {
