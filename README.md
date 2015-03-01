@@ -21,7 +21,7 @@ resolvers += "Maven Repository on Github" at "http://xenonabe.github.io/play2-pe
 キャッシュの保存
 ```java
 // Cache for 2 hours
-PersistentCache.set("item.key", 60 * 60 * 2);
+PersistentCache.set("item.key", item, 60 * 60 * 2);
 ```
 
 キャッシュの取出し
