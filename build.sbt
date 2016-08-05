@@ -1,22 +1,16 @@
-name := "play2-persistent-cache"
+name := "twinkle-persistent-cache"
 
-version := "1.0.0"
+version := "2.5.1"
 
 lazy val root = (project in file(".")).enablePlugins(PlayJava)
 
-scalaVersion := "2.11.4"
+scalaVersion := "2.11.7"
 
-publishTo := Some(Resolver.file("play2-persistent-cache",file("../pages"))(Patterns(true, Resolver.mavenStyleBasePattern)))
-
-incOptions := incOptions.value.withNameHashing(true)
+publishTo := Some(Resolver.file("twinkle-persistent-cache",file("../pages"))(Patterns(true, Resolver.mavenStyleBasePattern)))
 
 libraryDependencies ++= Seq(
   cache
 )
-
-PlayKeys.ebeanEnabled := false
-
-//EclipseKeys.executionEnvironment := Some(EclipseExecutionEnvironment.JavaSE18)
 
 EclipseKeys.withSource := true
 
