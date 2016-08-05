@@ -1,42 +1,58 @@
-# play2-persistent-cache-plugin
+# play2-persistent-cache-plugin (module)
 Persistent Cache Module for Playframework
 
-Playframeworkで永続キャッシュを使用するためのプラグインです。
+Playframeworkで永続キャッシュを使用するためのモジュールです。  
+(Playframework 2.5.ｘ 対応)
 
-Playframeworkには[キャッシュのしくみ](https://www.playframework.com/documentation/2.2.x/JavaCache)が備わっていますが、機能は最低限に抑えられており永続的なキャッシュができません(Playを再起動するとキャッシュはすべて消えてしまう)。
+Playframeworkには[キャッシュのしくみ](https://www.playframework.com/documentation/2.5.x/JavaCache)が備わっていますが、機能は最低限に抑えられており永続的なキャッシュができません(Playを再起動するとキャッシュはすべて消えてしまう)。
 
 Playframeworkのキャッシュ機構に用いられている[EHCache](http://www.ehcache.org)に永続キャッシュの機能はあるので、それをこのプラグインで使用しています。
 
-## 永続キャッシュプラグインのインポート
+## 永続キャッシュモジュールのインポート
 build.sbt の libraryDependencies に 次のように追加します
 ```scala
 libraryDependencies ++= Seq(
-  "play2-persistent-cache" % "play2-persistent-cache_2.11" % "1.0.0"
+  "twinkle-persistent-cache" % "twinkle-persistent-cache_2.11" % "2.5.1"
 )
 
 resolvers += "Maven Repository on Github" at "http://xenonabe.github.io/play2-persistent-cache-plugin/"
 ```
 
+また、application.confにモジュール追加の設定をします
+```conf
+play.modules.enabled += "twinkle.cache.PersistentCacheModule"
+```
+
 ## 永続キャッシュプラグイン API の使用
+インジェクションでインスタンスを取得してください
+```java
+＠Inject
+Provider<PersistentCacheApi> persistentCacheProvider
+
+void foo() {
+  PersistentCacheApi persistentCache = persistentCacheProvider.get();
+}
+```
+
 キャッシュの保存
 ```java
 // Cache for 2 hours
-PersistentCache.set("item.key", item, 60 * 60 * 2);
+persistentCache.set("item.key", item, 60 * 60 * 2);
 ```
 
 キャッシュの取出し
 ```java
-(MyItem) item = (MyItem)PersistentCache.get("item.key");
+(MyItem) item = (MyItem)persistentCache.get("item.key");
 ```
 
 キャッシュの削除
 ```java
-PersistentCache.remove("item.key");
+persistentCache.remove("item.key");
 ```
 
 保存されているキャッシュのキーをすべて取得
 ```java
-List<String> keys = PersistentCache.getKeys();
+List<String> keys = persistentCache.getKeys();
 ```
 
 ## 永続キャッシュプラグイン の設定
@@ -47,7 +63,7 @@ List<String> keys = PersistentCache.getKeys();
 <diskStore path="/path/to/store/data"/>
 ```
 
-このプラグインのデフォルトは[persistentEhcache-default.xml](conf/persistentEhcache-default.xml)となっています。
+このモジュールのデフォルト設定は[persistentEhcache-default.xml](conf/persistentEhcache-default.xml)にあります。
 
 参考リンク <http://ehcache.org/documentation/2.8/get-started/storage-options#DiskStore>
 
