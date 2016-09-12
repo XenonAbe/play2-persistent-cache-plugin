@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import javax.inject.Provider;
 import javax.inject.Singleton;
 
+import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.Ehcache;
 import play.Application;
@@ -28,6 +29,7 @@ public class PersistentCacheModule extends Module {
 
     @Singleton
     public static class PersistentCacheProvider implements Provider<PersistentCacheApi> {
+        private static final String CACHE_NAME = "playPersistent";
         private final Provider<Application> applicationProvider;
         private final ApplicationLifecycle lifecycle;
         private PersistentCacheApi persistentCache;
@@ -48,9 +50,12 @@ public class PersistentCacheModule extends Module {
                         if (ehcacheXml == null)
                             ehcacheXml = application.classloader().getResource("persistentEhcache-default.xml");
                         CacheManager manager = CacheManager.newInstance(ehcacheXml);
-                        manager.addCache("playPersistent");
+                        Cache cache = manager.getCache(CACHE_NAME);
+                        if (cache == null) {
+                            manager.addCache(CACHE_NAME);
+                            cache = manager.getCache(CACHE_NAME);
+                        }
                         //logger.debug("persistentEhcache config = {}", manager.getActiveConfigurationText());
-                        Ehcache cache = manager.getEhcache("playPersistent");
                         persistentCache = new PersistentCacheApi(cache);
 
                         lifecycle.addStopHook(() -> {
