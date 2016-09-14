@@ -9,8 +9,9 @@ import javax.inject.Singleton;
 
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheManager;
-import net.sf.ehcache.Ehcache;
 import play.Application;
+import play.Logger;
+import play.Logger.ALogger;
 import play.api.Configuration;
 import play.api.Environment;
 import play.api.inject.Binding;
@@ -19,6 +20,7 @@ import play.inject.ApplicationLifecycle;
 import scala.collection.Seq;
 
 public class PersistentCacheModule extends Module {
+    private static final ALogger logger = Logger.of(PersistentCacheModule.class);
 
     @Override
     public Seq<Binding<?>> bindings(Environment arg0, Configuration arg1) {
@@ -49,7 +51,8 @@ public class PersistentCacheModule extends Module {
                         URL ehcacheXml = application.classloader().getResource("persistentEhcache.xml");
                         if (ehcacheXml == null)
                             ehcacheXml = application.classloader().getResource("persistentEhcache-default.xml");
-                        CacheManager manager = CacheManager.newInstance(ehcacheXml);
+                        CacheManager manager = CacheManager.create(ehcacheXml);
+                        logger.debug("PersistentCacheModule CacheManager create");
                         Cache cache = manager.getCache(CACHE_NAME);
                         if (cache == null) {
                             manager.addCache(CACHE_NAME);
@@ -59,6 +62,7 @@ public class PersistentCacheModule extends Module {
                         persistentCache = new PersistentCacheApi(cache);
 
                         lifecycle.addStopHook(() -> {
+                            logger.debug("PersistentCacheModule CacheManager shutdown");
                             manager.shutdown();
                             return CompletableFuture.completedFuture(null);
                         });
