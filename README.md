@@ -12,7 +12,7 @@ Playframeworkのキャッシュ機構に用いられている[EHCache](http://ww
 build.sbt の libraryDependencies に 次のように追加します
 ```scala
 libraryDependencies ++= Seq(
-  "twinkle-persistent-cache" % "twinkle-persistent-cache_2.11" % "2.5.1"
+  "twinkle-persistent-cache" % "twinkle-persistent-cache_2.11" % "2.5.4"
 )
 
 resolvers += "Maven Repository on Github" at "http://xenonabe.github.io/play2-persistent-cache-plugin/"
