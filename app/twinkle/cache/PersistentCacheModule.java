@@ -9,6 +9,7 @@ import javax.inject.Singleton;
 
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheManager;
+import net.sf.ehcache.config.ConfigurationFactory;
 import play.Application;
 import play.Logger;
 import play.Logger.ALogger;
@@ -51,14 +52,14 @@ public class PersistentCacheModule extends Module {
                         URL ehcacheXml = application.classloader().getResource("persistentEhcache.xml");
                         if (ehcacheXml == null)
                             ehcacheXml = application.classloader().getResource("persistentEhcache-default.xml");
-                        CacheManager manager = CacheManager.create(ehcacheXml);
+                        net.sf.ehcache.config.Configuration cacheManagerConfig = ConfigurationFactory.parseConfiguration(ehcacheXml);
+                        CacheManager manager = new CacheManager(cacheManagerConfig);
                         logger.debug("PersistentCacheModule CacheManager create");
                         Cache cache = manager.getCache(CACHE_NAME);
                         if (cache == null) {
                             manager.addCache(CACHE_NAME);
                             cache = manager.getCache(CACHE_NAME);
                         }
-                        //logger.debug("persistentEhcache config = {}", manager.getActiveConfigurationText());
                         persistentCache = new PersistentCacheApi(cache);
 
                         lifecycle.addStopHook(() -> {

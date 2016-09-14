@@ -2,7 +2,6 @@
 <ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../config/ehcache.xsd" updateCheck="false"
   name="PERSISTENT_CACHE_MANAGER">
 
-<!--
   <defaultCache
     maxElementsInMemory="10000"
     eternal="false"
@@ -14,11 +13,4 @@
     diskExpiryThreadIntervalSeconds="120"
     memoryStoreEvictionPolicy="LRU"
   />
--->
-  <cache
-    maxBytesLocalHeap="50M"
-    maxBytesLocalDisk="10G"
-  >
-    <persistence strategy="localRestartable" synchronousWrites="true"/>
-  </cache>
 </ehcache>
