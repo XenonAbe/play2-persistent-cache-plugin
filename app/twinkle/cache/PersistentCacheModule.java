@@ -32,7 +32,7 @@ public class PersistentCacheModule extends Module {
 
     @Singleton
     public static class PersistentCacheProvider implements Provider<PersistentCacheApi> {
-        private static final String CACHE_NAME = "playPersistent";
+        private static final String CACHE_NAME_PREFIX = "playPersistent";
         private final Provider<Application> applicationProvider;
         private final ApplicationLifecycle lifecycle;
         private PersistentCacheApi persistentCache;
@@ -41,6 +41,10 @@ public class PersistentCacheModule extends Module {
         public PersistentCacheProvider(Provider<Application> applicationProvider, ApplicationLifecycle lifecycle) {
             this.applicationProvider = applicationProvider;
             this.lifecycle = lifecycle;
+        }
+
+        private String getCahceName(Application application) {
+        	return CACHE_NAME_PREFIX + application.configuration().getString("play.cache.persistent.name", "");
         }
 
         @Override
@@ -55,10 +59,10 @@ public class PersistentCacheModule extends Module {
                         net.sf.ehcache.config.Configuration cacheManagerConfig = ConfigurationFactory.parseConfiguration(ehcacheXml);
                         CacheManager manager = new CacheManager(cacheManagerConfig);
                         logger.debug("PersistentCacheModule CacheManager create");
-                        Cache cache = manager.getCache(CACHE_NAME);
+                        Cache cache = manager.getCache(getCahceName(application));
                         if (cache == null) {
-                            manager.addCache(CACHE_NAME);
-                            cache = manager.getCache(CACHE_NAME);
+                            manager.addCache(getCahceName(application));
+                            cache = manager.getCache(getCahceName(application));
                         }
                         persistentCache = new PersistentCacheApi(cache);
 

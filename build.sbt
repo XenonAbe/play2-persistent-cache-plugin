@@ -1,6 +1,6 @@
 name := "twinkle-persistent-cache"
 
-version := "2.5.4"
+version := "2.5.5"
 
 lazy val root = (project in file(".")).enablePlugins(PlayJava)
 

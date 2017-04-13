@@ -12,15 +12,19 @@ Playframeworkのキャッシュ機構に用いられている[EHCache](http://ww
 build.sbt の libraryDependencies に 次のように追加します
 ```scala
 libraryDependencies ++= Seq(
-  "twinkle-persistent-cache" % "twinkle-persistent-cache_2.11" % "2.5.4"
+  "twinkle-persistent-cache" % "twinkle-persistent-cache_2.11" % "2.5.5"
 )
 
 resolvers += "Maven Repository on Github" at "http://xenonabe.github.io/play2-persistent-cache-plugin/"
 ```
 
 また、application.confにモジュール追加の設定をします
+必要に応じてキャッシュの名前を指定してください
+(複数インスタンスでのバッティングを防ぐため)
 ```conf
 play.modules.enabled += "twinkle.cache.PersistentCacheModule"
+
+play.cache.persistent.name = "Foo"
 ```
 
 ## 永続キャッシュプラグイン API の使用
