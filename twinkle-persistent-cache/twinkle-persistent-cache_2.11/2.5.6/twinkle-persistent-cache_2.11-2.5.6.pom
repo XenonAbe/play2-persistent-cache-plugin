@@ -5,7 +5,7 @@
     <artifactId>twinkle-persistent-cache_2.11</artifactId>
     <packaging>jar</packaging>
     <description>twinkle-persistent-cache</description>
-    <version>2.5.6-SNAPSHOT</version>
+    <version>2.5.6</version>
     <name>twinkle-persistent-cache</name>
     <organization>
         <name>twinkle-persistent-cache</name>
